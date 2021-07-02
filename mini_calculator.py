@@ -6,7 +6,6 @@ import os.path
 
 def choose_level():
     # choosing the difficulty level
-    global level
     lvl = input("""Which level do you want? Enter a number:
     1 - simple operations with numbers 2-9
     2 - integral squares of 11-29\n""")
@@ -90,24 +89,28 @@ def result_saver():
     else:
         exit()
 
-level = choose_level()
 
-mark = 5
+def main_logic():
+    # a user will be given 5 tasks to solve, that's why the loop is created.
+    global level, mark  # variables are made global, so all functions have an access to it
+    level = choose_level()  # user have to choose the difficulty level
+    mark = 5  # default max score value
+    for _ in range(5):
+        # assigning the result of math_task_generator() to a variable to make sure we compare the same expression, not a new one
+        random_expression = math_task_generator()
+        # printing the randomly generated expression so user can see it
+        print(random_expression)
+        # program reads user's answer invoking the user_input_check() function.
+        # function gives a possibility to rerun only user input, not the whole loop
+        answer = user_input_check()
+        # comparing user's answer with the result of computer's calculation and print "Right!" or "Wrong" respectively
+        if answer == calculation(random_expression):
+            print("Right!")
+        else:
+            print("Wrong!")
+            mark -= 1
+    print(f"Your mark is {mark}/5.")
+    result_saver()
 
-# a user will be given 5 tasks to solve, that's why the loop is created.
-for _ in range(5):
-    # assigning the result of math_task_generator() to a variable to make sure we compare the same expression, not a new one
-    random_expression = math_task_generator()
-    # printing the randomly generated expression so user can see it
-    print(random_expression)
-    # program reads user's answer invoking the user_input_check() function.
-    # function gives a possibility to rerun only user input, not the whole loop
-    answer = user_input_check()
-    # comparing user's answer with the result of computer's calculation and print "Right!" or "Wrong" respectively
-    if answer == calculation(random_expression):
-        print("Right!")
-    else:
-        print("Wrong!")
-        mark -= 1
-print(f"Your mark is {mark}/5.")
-result_saver()
+
+main_logic()
